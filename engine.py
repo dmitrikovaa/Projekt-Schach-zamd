@@ -94,35 +94,6 @@ def evaluate_all_possible_moves(board, minMaxArg, maximumNumberOfMoves = 10):
     more moves possible (in most situations there are), only return the top (or worst). Hint: Slice the list after sorting. 
     """
     # TODO: Implement the method according to the above description
-    moves = []
-
-    # 1) Alle Figuren der aktuellen Farbe iterieren
-    for piece in board.iterate_cells_with_pieces(minMaxArg.playAsWhite):
-        valid_cells = piece.get_valid_cells()
-
-        # 2) Jeden Zug simulieren und bewerten
-        for cell in valid_cells:
-            origin = (int(piece.cell[0]), int(piece.cell[1]))
-            captured = board.get_cell(cell)
-
-            board.set_cell(cell, piece)
-            score = board.evaluate()
-            moves.append(Move(piece, cell, score))
-
-            # 3) Rückgängig machen
-            board.set_cell(origin, piece)
-            if captured is not None:
-                board.set_cell(cell, captured)
-
-    # 4) Sortieren
-    # Weiß will hohe Scores, Schwarz will niedrige Scores
-    moves.sort(key=lambda m: m.score, reverse=minMaxArg.playAsWhite)
-
-    # 5) Auf gewünschte Anzahl beschränken
-    if len(moves) > maximumNumberOfMoves:
-        moves = moves[:maximumNumberOfMoves]
-
-    return moves
 
 
 def minMax(board, minMaxArg):
@@ -192,45 +163,7 @@ def minMax(board, minMaxArg):
     :rtype: :py:class:`Move`
     """
     # TODO: Implement the Mini-Max algorithm
-    # Top-Züge für aktuelle Farbe holen (bereits sortiert)
-    moves = evaluate_all_possible_moves(board, minMaxArg)
 
-    # Keine Züge -> "verloren" für die aktuelle Farbe (Score extrem setzen)
-    if not moves:
-        # damit UI nicht crasht, geben wir einen "Nichtzug" zurück (von->zu gleich)
-        king = board.find_king(minMaxArg.playAsWhite)
-        fallback_piece = king if king is not None else None
-        fallback_cell = fallback_piece.cell if fallback_piece is not None else (0, 0)
-        losing_score = -1e9 if minMaxArg.playAsWhite else 1e9
-        return Move(fallback_piece, fallback_cell, losing_score)
-
-    # If depth == 1 -> bester Zug (jetzt schon korrekt sortiert)
-    if minMaxArg.depth <= 1:
-        return moves[0]
-
-    # Sonst: Für jeden Zug Gegenzüge auswerten
-    for mv in moves:
-        origin = (int(mv.piece.cell[0]), int(mv.piece.cell[1]))
-        captured = board.get_cell(mv.cell)
-
-        board.set_cell(mv.cell, mv.piece)
-        reply = minMax_cached(board, minMaxArg.next())
-        mv.score = reply.score  # Score des Folgezuges übernehmen
-
-        board.set_cell(origin, mv.piece)
-        if captured is not None:
-            board.set_cell(mv.cell, captured)
-
-    # Erneut sortieren, weil mv.score überschrieben wurde
-    moves.sort(key=lambda m: m.score, reverse=minMaxArg.playAsWhite)
-
-    # „einfachste“ Wahl: nimm den erstplatzierten
-    return moves[0]
-
-
-import random
-# Make sure Move is imported depending on how you structured your file.
-# from engine import Move  # if needed
 
 def suggest_random_move(board):
     """
@@ -246,29 +179,6 @@ def suggest_random_move(board):
     If there are no legal moves at all, return None.
     """
     # TODO: Implement a valid random move
-
-    # get all white pieces
-    pieces = list(board.iterate_cells_with_pieces(True))
-
-    # build a list of (piece, valid_moves) for pieces that can actually move
-    candidates = []
-    for piece in pieces:
-        valid_cells = piece.get_valid_cells()
-        if valid_cells:
-            candidates.append((piece, valid_cells))
-
-    # no legal moves for white
-    if not candidates:
-        return None
-
-    # pick random piece
-    piece, valid_cells = random.choice(candidates)
-
-    # pick random target
-    target = random.choice(valid_cells)
-
-    # return as Move; score is irrelevant here
-    return Move(piece=piece, cell=target, score=0.0)
 
 
 

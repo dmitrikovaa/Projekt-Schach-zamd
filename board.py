@@ -241,13 +241,6 @@ class Board(BoardBase):
         :type white: Boolean
         """
         # TODO: Implement
-        for row in range(8):
-            for col in range(8):
-                piece = self.cells[row][col]
-                if piece is None:
-                    continue
-                if piece.white == white:
-                    yield piece
 
     def find_king(self, white):
         """
@@ -262,10 +255,6 @@ class Board(BoardBase):
         :return: The :py:class:'King': object of the given color or None if there is no King on the board.
         """
         # TODO: Implement
-        for piece in self.iterate_cells_with_pieces(white):
-            if isinstance(piece, King):
-                return piece
-        return None
 
     def is_king_check(self, white):
         """
@@ -278,20 +267,6 @@ class Board(BoardBase):
         Iterate over each reachable cell and check if the kings cell is reachable. If yes, shortcut and return True right away.
         """
         # TODO: Implement
-        king = self.find_king(white)
-        if king is None:
-            # Kein König dieser Farbe auf dem Brett → für unsere Zwecke: nicht im Schach
-            return False
-
-        king_pos = (int(king.cell[0]), int(king.cell[1]))
-
-        # Alle gegnerischen Figuren durchgehen
-        for piece in self.iterate_cells_with_pieces(not white):
-            for cell in piece.get_reachable_cells():
-                if (int(cell[0]), int(cell[1])) == king_pos:
-                    return True
-
-        return False
 
     def evaluate(self):
         """
@@ -305,15 +280,6 @@ class Board(BoardBase):
         """
         # TODO: Implement
         score = 0.0
-
-        # Weiße Figuren aufsummieren
-        for piece in self.iterate_cells_with_pieces(True):
-            score += piece.evaluate()
-
-        # Schwarze Figuren abziehen
-        for piece in self.iterate_cells_with_pieces(False):
-            score -= piece.evaluate()
-
         return score
 
     def is_valid_cell(self, cell):
@@ -327,15 +293,6 @@ class Board(BoardBase):
         Don´t forget to handle the special case of "cell" being None. Return False in that case
         """
         # TODO: Implement
-        if cell is None:
-            return False
-        
-        row, col = cell
-        if (0 <= row <= 7) and (0 <= col <= 7):
-            #print(cell, "is valid.")
-            return True
-        else:
-            return False
 
     def cell_is_valid_and_empty(self, cell):
         """
@@ -345,16 +302,7 @@ class Board(BoardBase):
         You can use the "is_valid_cell()" Method to verify the cell is valid in the first place.
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
-        #print("Cell: ", cell)
-        if self.is_valid_cell(cell):
-            if self.get_cell(cell) is None:
-                #print(self.get_cell(cell))
-                return True
-            else:
-                #print(self.get_cell(cell))
-                return False
-        else:
-            return False
+        # TODO: Implement
 
     def piece_can_enter_cell(self, piece, cell):
         """
@@ -372,29 +320,6 @@ class Board(BoardBase):
         the given piece "white" attribute.
         """
         # TODO: Implement
-        #print("Bin in Piece can enter cell.")
-        if not self.is_valid_cell(cell):
-            return False
-        
-        cell_piece = self.get_cell(cell)
-
-        if cell_piece is None:
-                return True
-        
-        return piece.white != cell_piece.white
-
-        # EHER ANFÄNGER LÖSUNG:
-        # if self.is_valid_cell(cell):
-        #     cell_piece = self.get_cell(cell)
-        #     if cell_piece is not None:
-        #         if piece.white == cell_piece.white:
-        #             return False
-        #         else:
-        #             return True
-        #     else:
-        #         return True
-        # else:
-        #     return False
  
 
     def piece_can_hit_on_cell(self, piece, cell):
@@ -412,35 +337,4 @@ class Board(BoardBase):
         If, however, there is another piece, it must be of opposing color. Check the other pieces "white" attribute and compare against
         the given piece "white" attribute.
         """
-        if not self.is_valid_cell(cell):
-            return False
-
-        cell_piece = self.get_cell(cell)
-        if cell_piece is None:
-            return False
-
-        return piece.white != cell_piece.white
-        # Alternativ:
-        # if self.is_valid_cell(cell):
-        #     cell_piece = self.get_cell(cell)
-        #     if cell_piece is not None:
-        #         if piece is not None:
-        #             if piece.white == True:
-        #                 if cell_piece.white == True:
-        #                     return False
-        #                 else:
-        #                     return True
-        #             else:
-        #                 if cell_piece.white == True:
-        #                     return True
-        #                 else:
-        #                     return False
-        #         else:
-        #             # unnötiger Zweig, aber typisch in Anfänger-Code
-        #             return False
-        #     else:
-        #         # Zelle ist leer -> kann nicht „gehittet“ werden
-        #         return False
-        # else:
-        #     # Ungültige Zelle -> kann nicht „gehittet“ werden
-        #     return False
+        # TODO: Implement
