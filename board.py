@@ -9,8 +9,6 @@ from util import (
     InvalidRowException,
 )
 
-#hehe test comment
-lol = 0
 
 class BoardBase:
     """
