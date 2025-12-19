@@ -213,9 +213,6 @@ class BoardBase:
 
         #self.save_to_disk()
 
-zitrone = BoardBase()
-print(zitrone)
-"""Hier ist meine Änderung"""
 
 class Board(BoardBase):
     """
@@ -286,8 +283,6 @@ class Board(BoardBase):
         return score
 
     def is_valid_cell(self, cell):
-
-
         """
         **TODO**: Check if the given cell coordinates are valid. A cell coordinate is valid if both
         row and coloumn are between 0 and 7 inclusively.
@@ -314,6 +309,13 @@ class Board(BoardBase):
         If so, use "get_cell()" to retrieve the piece placed on it and return True if there is None
         """
         # TODO: Implement
+        if self.is_valid_cell(cell) == True:
+            if self.get_cell(cell) == None:
+                return True
+            else:
+                return self.get_cell(cell)
+        else: 
+            return False
 
     def piece_can_enter_cell(self, piece, cell):
         """
@@ -349,3 +351,9 @@ class Board(BoardBase):
         the given piece "white" attribute.
         """
         # TODO: Implement
+
+zitrone = Board()
+print(zitrone)
+
+test = zitrone.cell_is_valid_and_empty((3,4))
+print(test)
