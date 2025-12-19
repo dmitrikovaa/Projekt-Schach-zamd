@@ -292,7 +292,13 @@ class Board(BoardBase):
         being within the allowed range (0 to 7 inclusively).
         Don´t forget to handle the special case of "cell" being None. Return False in that case
         """
-        # TODO: Implement
+        # TODO: Implemen
+        if cell is None:
+            return False
+        row, col = cell
+        if 0 <= row <= 7 and  0 <= col <= 7:
+            return True
+    #print(is_valid_cell(None, (4,3)))
 
     def cell_is_valid_and_empty(self, cell):
         """
