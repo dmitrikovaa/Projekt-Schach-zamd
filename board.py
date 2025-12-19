@@ -316,7 +316,8 @@ class Board(BoardBase):
                 return self.get_cell(cell)
         else: 
             return False
-
+    #Noch eine Lösung #return self.is_valid_cell(cell) and self.get_cell(cell) is None
+    
     def piece_can_enter_cell(self, piece, cell):
         """
         **TODO**: Check if the given piece can enter the given cell.
