@@ -215,6 +215,9 @@ class BoardBase:
 
         #self.save_to_disk()
 
+zitrone = BoardBase()
+print(zitrone)
+"""Hier ist meine Änderung"""
 
 class Board(BoardBase):
     """
@@ -285,6 +288,8 @@ class Board(BoardBase):
         return score
 
     def is_valid_cell(self, cell):
+
+
         """
         **TODO**: Check if the given cell coordinates are valid. A cell coordinate is valid if both
         row and coloumn are between 0 and 7 inclusively.
